@@ -1,5 +1,9 @@
-import { all } from 'redux-saga/effects';
+import { all, takeLatest } from 'redux-saga/effects';
+
+import { PodcastTypes } from '~/store/ducks/podcasts';
+
+import { load } from './podcasts';
 
 export default function* rootSaga() {
-  return yield all([]);
+  return yield all([takeLatest(PodcastTypes.LOAD_REQUEST, load)]);
 }
