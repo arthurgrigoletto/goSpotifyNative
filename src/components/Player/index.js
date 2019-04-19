@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import {
   Container,
@@ -11,27 +12,33 @@ import {
   ControlIcon,
 } from './styles';
 
-const Player = () => (
-  <Container>
-    <CoverBackground source={{ uri: 'https://s3-sa-east-1.amazonaws.com/gonative/cover1.png' }} />
+const Player = ({ player, currentEpisode }) => player.current && (
+<Container>
+  <CoverBackground source={{ uri: currentEpisode.artwork }} />
 
-    <EpisodeInfo>
-      <Title>Papercut</Title>
-      <Author>Linkin Park</Author>
-    </EpisodeInfo>
+  <EpisodeInfo>
+    <Title>{currentEpisode.title}</Title>
+    <Author>{currentEpisode.artist}</Author>
+  </EpisodeInfo>
 
-    <Controls>
-      <ControlButton onPres={() => {}}>
-        <ControlIcon name="skip-previous" />
-      </ControlButton>
-      <ControlButton onPres={() => {}}>
-        <ControlIcon name="play-circle-filled" />
-      </ControlButton>
-      <ControlButton onPres={() => {}}>
-        <ControlIcon name="skip-next" />
-      </ControlButton>
-    </Controls>
-  </Container>
+  <Controls>
+    <ControlButton onPres={() => {}}>
+      <ControlIcon name="skip-previous" />
+    </ControlButton>
+    <ControlButton onPres={() => {}}>
+      <ControlIcon name="play-circle-filled" />
+    </ControlButton>
+    <ControlButton onPres={() => {}}>
+      <ControlIcon name="skip-next" />
+    </ControlButton>
+  </Controls>
+</Container>
 );
 
-export default Player;
+const mapStateToProps = state => ({
+  player: state.player,
+  currentEpisode: state.player.podcast
+    ? state.player.podcast.tracks.find(episode => episode.id === state.player.current)
+    : null,
+});
+export default connect(mapStateToProps)(Player);
